@@ -2,12 +2,11 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 
 import javax.swing.*;
-import java.io.IOException;
-import java.io.ObjectInput;
 import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Observable;
-import java.util.Scanner;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -39,18 +38,11 @@ public class Crawler extends Thread {
 
     public static long start = 0;
 
-    /** Instance Variables **/
-    enum CrawlerType {
-        CRAWLER,
-        WRITER,
-        DEFAULT
-    }
-
+    public static Connection connS;
     public int id;
     public CrawlerType type;
     public boolean isBusy = false;
     public Connection conn;//ToDo set this up
-
     /** Constructors **/
     public Crawler() {
         this(-1, CrawlerType.DEFAULT, false);
@@ -62,8 +54,7 @@ public class Crawler extends Thread {
         this.isBusy = isBusy;
     }
 
-
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         /*Grab user preferences*/
 /*        Scanner s = new Scanner(System.in);
         int crawlerNum, writerNum;
@@ -87,11 +78,17 @@ public class Crawler extends Thread {
             rootCheck = "obamawhitehouse";
             rootURLTable = "obama";
             rootWordTable = "obamaWords";
+            connS = DriverManager.getConnection("jdbc:mysql://128.210.106.77/ObamaGov", "sean", "password");
+            PreparedStatement s = connS.prepareStatement("USE ObamaGov;");
+            s.executeUpdate();
         } else {
             root = "http://www.whitehouse.gov";
             rootCheck = "whitehouse.gov";
             rootURLTable = "trump";
             rootWordTable = "trumpWords";
+            connS = DriverManager.getConnection("jdbc:mysql://128.210.106.77/TrumpGov", "sean", "password");
+            PreparedStatement s = connS.prepareStatement("USE ObamaGov;");
+            s.executeUpdate();
         }
         start = System.nanoTime();
         /* begin crawl */
@@ -129,6 +126,32 @@ public class Crawler extends Thread {
         }*/
     }
 
+    public static Crawler getFreeCrawler(Crawler.CrawlerType type) {
+        if (type == Crawler.CrawlerType.WRITER) {
+            while (writers.size() > 0) { /*ToDo determine if statement is stupid... Or may lead to inf. loop*/
+                for (Crawler w : writers) {
+                    System.out.println("I'm stuck in the writer loop!");
+                    System.out.println(w.isBusy);
+                    if (!w.isBusy) {
+                        w.isBusy = true;
+                        return w;
+                    }
+                }
+            }
+        } else if (type == Crawler.CrawlerType.CRAWLER) {
+            while (crawlers.size() > 0) {
+                for (Crawler w : crawlers) {
+                    System.out.println("I'm stuck in the crawler loop!");
+                    if (!w.isBusy) {
+                        w.isBusy = true;
+                        return w;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
     public void run() {
         org.jsoup.nodes.Document d;
         int myID;
@@ -155,34 +178,6 @@ public class Crawler extends Thread {
             currURL = urls.get(myID = currID.incrementAndGet());
             //System.out.println(currURL);
         }
-    }
-
-
-
-    public static Crawler getFreeCrawler(Crawler.CrawlerType type) {
-        if (type == Crawler.CrawlerType.WRITER) {
-            while (writers.size() > 0) { /*ToDo determine if statement is stupid... Or may lead to inf. loop*/
-                for (Crawler w: writers) {
-                    System.out.println("I'm stuck in the writer loop!");
-                    System.out.println(w.isBusy);
-                    if(!w.isBusy) {
-                        w.isBusy = true;
-                        return w;
-                    }
-                }
-            }
-        } else if (type == Crawler.CrawlerType.CRAWLER) {
-            while (crawlers.size() > 0) {
-                for (Crawler w: crawlers) {
-                    System.out.println("I'm stuck in the crawler loop!");
-                    if(!w.isBusy) {
-                        w.isBusy = true;
-                        return w;
-                    }
-                }
-            }
-        }
-        return null;
     }
 
     public String parseDescription(String url, int urlID) {
@@ -257,7 +252,7 @@ public class Crawler extends Thread {
     }
 
     public void addURL(String url, int urlID, String description) {
-        /*try {
+        try {
             PreparedStatement s = conn.prepareStatement("INSERT INTO ? values(?, ?, ?);");
             s.setString(1, rootURLTable);
             s.setString(2, url);
@@ -268,13 +263,13 @@ public class Crawler extends Thread {
             e.printStackTrace();
         }
         isBusy = false;
-        */
+
     }
 
     public void addWord(String word, int urlID) {
 
         /* need to shorten word to 64 chars if necessary */
-        /*
+
         if (word.length() > 64) {word = word.substring(0, 64);}
         try {
             PreparedStatement s = conn.prepareStatement("INSERT INTO ? values(?, ?);");
@@ -286,7 +281,15 @@ public class Crawler extends Thread {
             e.printStackTrace();
         }
         isBusy = false;
-        */
+    }
+
+    /**
+     * Instance Variables
+     **/
+    enum CrawlerType {
+        CRAWLER,
+        WRITER,
+        DEFAULT
     }
     
 }
