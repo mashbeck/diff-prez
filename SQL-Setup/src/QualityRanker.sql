@@ -10,7 +10,7 @@ CREATE TABLE trumpResults (
     url VARCHAR(256),
     description VARCHAR(MAX),
     relevance INT,
-    rank INT
+    ranking INT
 );
 
 /*Add to query and trumpResults*/
@@ -22,5 +22,15 @@ CREATE TABLE obamaResults (
     url VARCHAR(256),
     description VARCHAR(MAX),
     relevance INT,
-    rank INT
+    ranking INT
 );
+
+/*DO THIS AFTER PROCESSING QUERY AND FETCHING SIGNIFICANT RESULTS*/
+
+DROP TABLE obamaResults;
+
+USE TrumpGov;
+
+DROP TABLE trumpResults;
+
+DROP TABLE query;
