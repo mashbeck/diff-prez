@@ -5,7 +5,25 @@ CREATE DATABASE ObamaGov;
 USE TrumpGov;
 
 CREATE TABLE trump(
-    URL ,
-    description,
+    url VARCHAR(256),
+    description VARCHAR(MAX),
+    id INT
+);
 
-_)
+CREATE TABLE trumpWords(
+    word VARCHAR(64),
+    id INT
+);
+
+USE ObamaGov;
+
+CREATE TABLE obama(
+    url VARCHAR(256),
+    description VARCHAR(MAX)
+    id INT
+);
+
+CREATE TABLE obamaWords(
+    word VARCHAR(64),
+    id INT
+);
