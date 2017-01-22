@@ -72,6 +72,15 @@ section {
   font-family: "Montserrat", sans-serif;
 }
 
+.results-section-title {
+  margin-top: 0;
+  padding-bottom: 20px;
+
+  text-align: center;
+  text-transform: uppercase;
+  font-family: "Montserrat", sans-serif;
+}
+
 .section-content {
   font-size: 1.4em;
   font-weight: 300;
@@ -181,7 +190,7 @@ input.search-button:hover {
 }
 
 #results-section {
-  min-height: 300px;
+  min-height: 400px;
   background-color: #207cca;
 }
 
