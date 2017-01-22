@@ -96,6 +96,13 @@ section {
   font-family: "Open Sans", sans-serif;
 }
 
+.section-content-final {
+  font-size: 1.4em;
+  font-weight: 300;
+  font-family: "Open Sans", sans-serif;
+  color: white;
+}
+
 #about-section {
   min-height: 400px;
   background-color: #207cca;
