@@ -3,7 +3,6 @@ import org.jsoup.nodes.Element;
 
 import javax.swing.*;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
@@ -83,9 +82,9 @@ public class Crawler extends Thread {
             rootURLTable = "obama";
             rootWordTable = "obamaWords";
 //            connS = DriverManager.getConnection("jdbc:mysql://localhost:3306/mysql", "root", "root");
-            PreparedStatement s = connS.prepareStatement("USE ObamaGov;");
-            System.out.println("USE TrumpGov;");
-            s.executeUpdate();
+//            PreparedStatement s = connS.prepareStatement("USE ObamaGov;");
+            System.out.println("USE ObamaGov;");
+          //  s.executeUpdate();
         } else {
             root = "http://www.whitehouse.gov";
             rootCheck = "whitehouse.gov";
