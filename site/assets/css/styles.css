@@ -12,7 +12,7 @@
 
   background-position: center center;
   background-size: cover;
-  background-color: #207cca;
+  background-color: red;
 }
 
 .header-text {
@@ -182,7 +182,7 @@ input.search-button:hover {
 
 #results-section {
   min-height: 400px;
-  background-color: red;
+  background-color: #207cca;
 }
 
 .results-wrapper {
@@ -206,14 +206,14 @@ input.search-button-results {
   position: relative;
   padding: 6px 15px;
   left: -8px;
-  border: 2px solid #E91D0E;
-  background-color: #E91D0E;
+  border: 2px solid #207cca;
+  background-color: #207cca;
   color: white;
 }
 
 input.search-button-results:hover {
   background-color: #fafafa;
-  color: #E91D0E;
+  color: #207cca;
 }
 
 .left-side {
