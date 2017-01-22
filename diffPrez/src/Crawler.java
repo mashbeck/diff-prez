@@ -102,12 +102,12 @@ public class Crawler extends Thread {
             try {
                  d = Jsoup.connect(currURL).get();
                 for (Element link : d.select("a[href]")) {
-                    getFreeCrawler(CrawlerType.CRAWLER).
-                            checkUrlInDB(urls, link.absUrl("href"));
+                    getFreeCrawler(CrawlerType.CRAWLER).checkUrlInDB(link.absUrl("href"));
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            currID.incrementAndGet();
         }
     }
 
@@ -138,16 +138,25 @@ public class Crawler extends Thread {
 
     public String parseDescription(String url, int urlID) {
         /* use Jsoup to grab title and p tags */
+        StringBuilder sb = new StringBuilder("");
         try {
             org.jsoup.nodes.Document d = Jsoup.connect(url).get();
-
+            sb.append(d.select("title").first().text());
+            sb.append(" ");
+            for (Element e: d.select("p")) {
+                sb.append(e.text());
+                sb.append(" ");
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        //Call addWord
-        /* remove crappy characters */
-        return null;
+        /* escape dangerous characters */
+        String s = sb.toString();
+        s.replaceAll(",", "");
+        s.replaceAll(":", "");
+        //ToDO consider best options for what to escape
+        return s;
     }
 
     public void checkWordInDB(String word, int urlID) {
@@ -168,7 +177,12 @@ public class Crawler extends Thread {
         int urlID;
         if (!urls.containsValue(url)) {
             urls.put((urlID = currID.getAndIncrement()), url);
-            Crawler.getFreeCrawler(CrawlerType.WRITER).addURL(url , urlID, parseDescription(url));
+            String description = parseDescription(url, urlID);
+            Crawler.getFreeCrawler(CrawlerType.WRITER).addURL(url , urlID, description);
+            String[] words = description.split(" ");
+            for (String word: words) {
+                getFreeCrawler(CrawlerType.CRAWLER).checkWordInDB(word, urlID);
+            }
         }
         isBusy = false;
     }
