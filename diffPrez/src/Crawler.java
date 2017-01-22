@@ -73,12 +73,17 @@ public class Crawler extends Thread {
         /* Start crawl over root */
         int rootChoice = JOptionPane.showOptionDialog(null, null, "Crawl over what domain?", 2,
                 JOptionPane.QUESTION_MESSAGE, null, new String[] {"http://www.whitehouse.gov", "http://www.obamawhitehouse.archives.gov"}, null);
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
         if (rootChoice == 1) {
             root = "http://www.obamawhitehouse.gov";
             rootCheck = "obamawhitehouse";
             rootURLTable = "obama";
             rootWordTable = "obamaWords";
-            connS = DriverManager.getConnection("jdbc:mysql://128.210.106.77/ObamaGov", "sean", "password");
+            connS = DriverManager.getConnection("jdbc:mysql://localhost:3306/mysql", "root", "root");
             PreparedStatement s = connS.prepareStatement("USE ObamaGov;");
             s.executeUpdate();
         } else {
