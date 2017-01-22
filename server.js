@@ -20,11 +20,14 @@ var Tconnection = mysql.createConnection({
 Oconnection.connect();
 Tconnection.connect(); */
 
+var array = ["result1", "result2", "result3", "result4"];
+app.set('view engine', 'ejs');
+
 app.use(bodyparser.urlencoded({ extended: true }));
 app.use(express.static('site'));
 
 app.post('/search', function(req, res){
-	res.send('You searched for "' + req.body.searchbox + '"');
+	res.render('results' , {searchquery: req.body.searchbox, results: array});
 });
 
 var server = app.listen(3000, function() {
