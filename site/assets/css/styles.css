@@ -1,7 +1,7 @@
 .main-header {
   height: 100vh;
 
-  background-image: url(/assets/img/archives.jpg);
+  background-image: url(/assets/img/404-splash.jpg);
   background-position: center center;
   background-size: cover;
 }
@@ -15,7 +15,7 @@
   -o-transform: translateY(-50%);
   transform: translateY(-50%);
 
-  color: #c71A1A;
+  color: white;
   text-align: center;
 }
 
