@@ -14,8 +14,7 @@ two presidencies, but also to better acknowledge where they may find common grou
 
 <h2>Methodology:</h2>
 
-- Created a <strong>multi-threaded</strong> Web-Crawler using <strong>Java</strong> and it's <strong>JDBC</strong>/<strong>SQL</strong> storage capabilities, as well as the open-source
-<strong>HTML</strong> parsing tool known as <strong>JSoup</strong> - (<a href=https://github.com/SeanFlannery>Sean Flannery</a>)
+- Created a <strong>multi-threaded</strong> Web-Crawler using <strong>Java</strong> and it's <strong>JDBC</strong>/<strong>SQL</strong> storage capabilities, as well as the open-source<strong>HTML</strong> parsing tool known as <strong>JSoup</strong> - (<a href=https://github.com/SeanFlannery>Sean Flannery</a>)
 - Built awesome Server written using <strong>Node.js</strong> to access the <strong>MySQL</strong> database 
 created to house the data from the crawler - (<a href=https://github.com/mashbeck>Matthew Ashbeck</a>)
 - Crafted a gorgeous UI using <strong>Bootstrap</strong>, <strong>CSS</strong>, and <strong>HTML</strong> - (<a href=https://github.com/jgrider>Jonathan Grider</a>)
