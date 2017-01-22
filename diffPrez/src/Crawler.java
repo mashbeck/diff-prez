@@ -75,8 +75,15 @@ public class Crawler {
     public static String[] parseText(String url, int urlID) {
         /* use Jsoup to grab title and p tags */
 
+        /* remove crappy characters */
+        return null;
     }
 
-    public static vo
+    public static void addWord(String word, int urlID) {
+        if (!words.containsKey(word)) {
+            words.put(word, (new ArrayList<Integer>(1)));
+        }
+        if (words.get(word))
+    }
 
 }
