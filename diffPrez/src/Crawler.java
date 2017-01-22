@@ -103,6 +103,7 @@ public class Crawler extends Thread {
             try {
                  d = Jsoup.connect(currURL).get();
                 for (Element link : d.select("a[href]")) {
+                    System.out.println("Link: " + link.absUrl("href"));
                     mainGuy.checkUrlInDB(link.absUrl("href"));
                     //getFreeCrawler(CrawlerType.CRAWLER).checkUrlInDB(link.absUrl("href"));
                 }
@@ -186,10 +187,11 @@ public class Crawler extends Thread {
     }
 
     public void checkUrlInDB(String url) {
+        if (!url.contains((root.replace("https://", "")))) {return;}
         int urlID;
         if (!urls.containsValue(url)) {
-            System.out.println("Crawling #" + currID.intValue() + " " + url);
-            urls.put((urlID = currID.getAndIncrement()), url);
+            //System.out.println("Crawling #" + nextID.intValue() + " " + url);
+            urls.put((urlID = nextID.getAndIncrement()), url);
             String description = parseDescription(url, urlID);
             addURL(url , urlID, description);
             //Crawler.getFreeCrawler(CrawlerType.WRITER).addURL(url , urlID, description);
