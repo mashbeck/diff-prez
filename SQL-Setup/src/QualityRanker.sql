@@ -15,7 +15,6 @@ CREATE TABLE trumpResults (
 
 /*Add to query and trumpResults*/
 
-
 /*Start using ObamaWhiteHouse.gov*/
 USE ObamaGov;
 
