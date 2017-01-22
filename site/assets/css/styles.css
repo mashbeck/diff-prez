@@ -1,3 +1,14 @@
 .container {
   max-width: 60em;
 }
+
+footer {
+  padding: 2em;
+
+  text-align: center;
+  font-size: 1.2em;
+}
+
+footer .fa-heart {
+  color: #f77380;
+}
