@@ -10,10 +10,10 @@
   height: 30vh;
   /* background-image: url(/assets/img/washington-monument.jpg); */
   border-bottom: 2px solid;
-  border-color: white;
+  border-color: red;
   background-position: center center;
   background-size: cover;
-  background-color: red;
+  background-color: #207cca;
 }
 
 .header-text {
