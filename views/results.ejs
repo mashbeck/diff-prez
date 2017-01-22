@@ -1,11 +1,87 @@
-<html>
-<head>
-<title>RESULTS</title>
-</head>
-<body>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://use.fontawesome.com/65f785ed14.js"></script>
+    <title>DiffPrez Search: "<%= searchquery %>"</title>
+
+    <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/bower_components/font-awesome/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:700,400" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/assets/css/styles.css">
+  </head>
+  <body>
+    <header class="results-header">
+      <div class="black"></div>
+
+      <nav class="navbar navbar-default">
+        <div class="container">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">
+              <i class="fa fa-search"></i>
+              Diff Prez
+            </a>
+          </div>
+
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="/">Home</a></li>
+              <li><a id="nav-about" href="/#">About</a></li>
+              <li>
+                  <form class="navbar-form" role="search" action="/search" method="post" id="formID">
+                    <input type="text" name="searchbox" class="search-box" placeholder="Search..." required x-moz-errormessage="Please fill this out" />
+                    <input type="submit" class="search-button" value="Search" />
+                  </form>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+      <div class="header-text">
+        <h1 class="header-title">Your Results.</h1>
+        <h2 class="header-subtitle">Go on, check them out!</h2>
+      </div>
+
+    </header>
+
+
 YOU HAVE JUST SEARCHED FOR: "<%= searchquery %>"
 <% for (var i=0; i < results.length; i++) { %>
 <li> <%= results[i] %></li>
 <% } %>
-</body>
+
+    <main>
+      <section id="about-section">
+        <div class="container">
+          <h2 class="section-title">Your Results</h2>
+          <div class="row results-wrapper">
+            <div class="left-side col-xs-6">
+              <p>Basdfjlasjdlfk ;asljdf ;lajsl;df jl;asjdf</p>
+            </div>
+            <div class="right-side col-xs-6">
+              <p>;asjdf; lajskld jflasjl;df j;lasj dljs;ld</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+
+    <footer>
+      Made with <i class="fa fa-heart"></i> by <a href="https://www.github.com/jagrider">Jonathan Grider</a>.
+    </footer>
+    <script src="/bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src='/assets/js/main.js'></script>
+  </body>
+
 </html>
