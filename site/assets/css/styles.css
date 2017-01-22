@@ -182,6 +182,20 @@ input.search-button:hover {
 
 }
 
+input.search-button-results {
+  position: relative;
+  padding: 6px 15px;
+  left: -8px;
+  border: 2px solid #E91D0E;
+  background-color: #E91D0E;
+  color: white;
+}
+
+input.search-button-results:hover {
+  background-color: #fafafa;
+  color: #E91D0E;
+}
+
 .left-side {
   text-align: left;
 
