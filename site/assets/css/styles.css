@@ -74,3 +74,8 @@ footer .fa-heart {
   text-align: center;
   font-size: 1em;
 }
+
+input.search-box {
+  background-color: #f47443;
+  color: black;
+}
