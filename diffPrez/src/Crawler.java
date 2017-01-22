@@ -1,10 +1,14 @@
 import java.sql.*;
 import org.jsoup.*;
+import org.jsoup.nodes.Element;
 
 import javax.swing.*;
+import javax.swing.text.Document;
 import java.io.*;
+import java.sql.Connection;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by SeanFlannery on 1/21/17.
@@ -12,10 +16,10 @@ import java.util.concurrent.ConcurrentHashMap;
  * Crawls over root domain and grabs significant information
  *
  */
-public class Crawler {
-    /* Class variables */
-    public static ArrayList<Worker> crawlers = new ArrayList<Worker>();
-    public static ArrayList<Worker> writers = new ArrayList<Worker>();
+public class Crawler extends Thread {
+    /** Class variables **/
+    public static ArrayList<Crawler> crawlers = new ArrayList<Crawler>();
+    public static ArrayList<Crawler> writers = new ArrayList<Crawler>();
 
     public static ConcurrentHashMap<Integer, String> urls =
             new ConcurrentHashMap<Integer, String>();
@@ -26,8 +30,32 @@ public class Crawler {
     public static String rootURLTable;
     public static String rootWordTable;
 
-    public static int currID = 0;
-    public static int nextID = 1;
+    public static AtomicInteger currID = new AtomicInteger(0);
+    public static AtomicInteger nextID = new AtomicInteger(1);
+
+    /** Instance Variables **/
+    enum CrawlerType {
+        CRAWLER,
+        WRITER,
+        DEFAULT
+    }
+
+    public int id;
+    public CrawlerType type;
+    public boolean isBusy;
+    public Connection conn;//ToDo set this up
+
+    /** Constructors **/
+    public Crawler() {
+        this(-1, CrawlerType.DEFAULT, false);
+    }
+
+    public Crawler(int id, CrawlerType type, boolean isBusy) {
+        this.id = id;
+        this.type = type;
+        this.isBusy = isBusy;
+    }
+
 
     public static void main(String[] args) {
         /*Grab user preferences*/
@@ -40,11 +68,11 @@ public class Crawler {
 
         /* Add all crawlers*/
         for (int i = 0; i < crawlerNum; i++) {
-            crawlers.add(new Worker(i, Worker.WorkerType.CRAWLER, false));
+            crawlers.add(new Crawler(i, CrawlerType.CRAWLER, false));
         }
         /* Add all writers*/
         for (int i = 0; i < writerNum; i++) {
-            writers.add(new Worker(i, Worker.WorkerType.WRITER, false));
+            writers.add(new Crawler(i, CrawlerType.WRITER, false));
         }
 
         /* Start crawl over root */
@@ -62,63 +90,116 @@ public class Crawler {
 
         /* begin crawl */
         crawl();
-
+        System.out.println("Done crawling " + root);
     }
 
     public static void crawl() {
         /* root is first url to be crawled */
         urls.put(0, root);
-
-        while (nextID != currID) {
-
+        org.jsoup.nodes.Document d;
+        String currURL = root;
+        while (nextID.intValue() > currID.intValue()) {
+            try {
+                 d = Jsoup.connect(currURL).get();
+                for (Element link : d.select("a[href]")) {
+                    getFreeCrawler(CrawlerType.CRAWLER).
+                            checkUrlInDB(urls, link.absUrl("href"));
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
-    public static boolean urlInDB(String URL) {
-        return urls.containsValue(URL);
+
+
+    public static Crawler getFreeCrawler(Crawler.CrawlerType type) {
+        if (type == Crawler.CrawlerType.WRITER) {
+            while (writers.size() > 0) { /*ToDo determine if statement is stupid... Or may lead to inf. loop*/
+                for (Crawler w: writers) {
+                    if(!w.isBusy) {
+                        w.isBusy = true;
+                        return w;
+                    }
+                }
+            }
+        } else if (type == Crawler.CrawlerType.CRAWLER) {
+            while (crawlers.size() > 0) {
+                for (Crawler w: crawlers) {
+                    if(!w.isBusy) {
+                        w.isBusy = true;
+                        return w;
+                    }
+                }
+            }
+        }
+        return null;
     }
 
-    public static String[] parseText(String url, int urlID) {
+    public String parseDescription(String url, int urlID) {
         /* use Jsoup to grab title and p tags */
+        try {
+            org.jsoup.nodes.Document d = Jsoup.connect(url).get();
 
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //Call addWord
         /* remove crappy characters */
         return null;
     }
 
-    public static void addWord(String word, int urlID) {
+    public void checkWordInDB(String word, int urlID) {
         /* either word isn't in words yet, or ArrayList isn't there... */
         if (!words.containsKey(word) || words.get(word) == null) {
             words.put(word, (new ArrayList<Integer>(1)));
-            getFreeWorker(Worker.WorkerType.WRITER).addWord(word, urlID, rootWordTable);
+            Crawler.getFreeCrawler(Crawler.CrawlerType.WRITER).addWord(word, urlID);
         }
         /* word is already there, but urlID is not */
         else if (!words.get(word).contains(urlID)) {
             words.get(word).add(urlID);
-            getFreeWorker(Worker.WorkerType.WRITER).addWord(word, urlID, rootWordTable);
+            Crawler.getFreeCrawler(Crawler.CrawlerType.WRITER).addWord(word, urlID);
         }
+        isBusy = false;
     }
 
-    public static Worker getFreeWorker(Worker.WorkerType type) {
-        if (type == Worker.WorkerType.WRITER) {
-            while (writers.size() > 0) { //ToDo determine if statement is stupid...
-                for (Worker w: writers) {
-                    if(!w.isBusy) {
-                        w.isBusy = true;
-                        return w;
-                    }
-                }
-            }
-        } else if (type == Worker.WorkerType.CRAWLER) {
-            while (crawlers.size() > 0) {
-                for (Worker w: crawlers) {
-                    if(!w.isBusy) {
-                        w.isBusy = true;
-                        return w;
-                    }
-                }
-            }
+    public void checkUrlInDB(String url) {
+        int urlID;
+        if (!urls.containsValue(url)) {
+            urls.put((urlID = currID.getAndIncrement()), url);
+            Crawler.getFreeCrawler(CrawlerType.WRITER).addURL(url , urlID, parseDescription(url));
         }
-        return null;
+        isBusy = false;
     }
 
+    public void addURL(String url, int urlID, String description) {
+        try {
+            PreparedStatement s = conn.prepareStatement("INSERT INTO ? values(?, ?, ?);");
+            s.setString(1, rootURLTable);
+            s.setString(2, url);
+            s.setString(3, description);
+            s.setInt(4, urlID);
+            s.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        isBusy = false;
+    }
+
+    public void addWord(String word, int urlID) {
+        /* need to shorten word to 64 chars if necessary */
+        if (word.length() > 64) {word = word.substring(0, 64);}
+        try {
+            PreparedStatement s = conn.prepareStatement("INSERT INTO ? values(?, ?);");
+            s.setString(1, rootWordTable);
+            s.setString(2, word);
+            s.setInt(3, urlID);
+            s.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        isBusy = false;
+    }
+    
 }
