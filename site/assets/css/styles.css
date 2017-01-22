@@ -68,3 +68,8 @@ footer {
 footer .fa-heart {
   color: #f77380;
 }
+
+.search-container {
+  text-align: center;
+  font-size: 1em;
+}
