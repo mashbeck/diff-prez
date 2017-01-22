@@ -2,6 +2,10 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 
 import javax.swing.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -17,6 +21,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Crawler extends Thread {
     /** Class variables **/
     public static Object gatekeeper = new Object();
+
+    public static PrintWriter out2 = null;
 
     public static ArrayList<Crawler> crawlers = new ArrayList<Crawler>();
     public static ArrayList<Crawler> writers = new ArrayList<Crawler>();
@@ -53,6 +59,12 @@ public class Crawler extends Thread {
     }
 
     public static void main(String[] args) throws SQLException {
+        try {
+            out2 = new PrintWriter(new FileOutputStream(new File("obama-setup.sql")));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
         /*Grab user preferences*/
 /*        Scanner s = new Scanner(System.in);
         int crawlerNum, writerNum;
@@ -83,7 +95,7 @@ public class Crawler extends Thread {
             rootWordTable = "obamaWords";
 //            connS = DriverManager.getConnection("jdbc:mysql://localhost:3306/mysql", "root", "root");
 //            PreparedStatement s = connS.prepareStatement("USE ObamaGov;");
-            System.out.println("USE ObamaGov;");
+            out2.println("USE ObamaGov;");
           //  s.executeUpdate();
         } else {
             root = "http://www.whitehouse.gov";
@@ -91,7 +103,7 @@ public class Crawler extends Thread {
             rootURLTable = "trump";
             rootWordTable = "trumpWords";
 //            connS = DriverManager.getConnection("jdbc:mysql://128.210.106.77/TrumpGov", "sean", "password");
-            System.out.println("USE TrumpGov;");
+            out2.println("USE TrumpGov;");
 //            PreparedStatement s = connS.prepareStatement("USE TrumpGov;");
             //s.executeUpdate();
         }
@@ -267,7 +279,7 @@ public class Crawler extends Thread {
         } catch (SQLException e) {
             //e.printStackTrace();
         }*/
-        System.out.println("INSERT INTO " + rootURLTable + " values(" + url + ", " + description + ", " + urlID +");");
+        out2.println("INSERT INTO " + rootURLTable + " values(" + url + ", " + description + ", " + urlID +");");
         isBusy = false;
 
     }
@@ -286,7 +298,7 @@ public class Crawler extends Thread {
         } catch (SQLException e) {
             //e.printStackTrace();
         }*/
-            System.out.println("INSERT INTO " + rootWordTable + " values(" + word + ", "+ urlID +");");
+            out2.println("INSERT INTO " + rootWordTable + " values(" + word + ", "+ urlID +");");
         isBusy = false;
     }
 
