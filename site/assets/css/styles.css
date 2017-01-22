@@ -79,3 +79,7 @@ input.search-box {
   background-color: #eeeff0;
   color: black;
 }
+
+input.search-box {
+  color: black;
+}
