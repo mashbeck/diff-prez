@@ -9,10 +9,11 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Created by SeanFlannery on 1/21/17.
  *
- * Crawls over root domain
+ * Crawls over root domain and grabs significant information
  *
  */
 public class Crawler {
+    /* Class variables */
     public static ArrayList<Worker> crawlers = new ArrayList<Worker>();
     public static ArrayList<Worker> writers = new ArrayList<Worker>();
 
@@ -20,10 +21,11 @@ public class Crawler {
             new ConcurrentHashMap<Integer, String>();
     public static ConcurrentHashMap<String, ArrayList<Integer>> words =
             new ConcurrentHashMap<String, ArrayList<Integer>>();
+
     public static String root;
 
-    public static int rootID;
-    public static int nextID;
+    public static int currID = 0;
+    public static int nextID = 1;
 
     public static void main(String[] args) {
         /*Grab user preferences*/
@@ -60,6 +62,16 @@ public class Crawler {
     public static void crawl() {
         /* root is first url to be crawled */
         urls.put(0, root);
+
+        while (nextID != currID) {
+
+        }
     }
+
+    public static boolean urlInDB(String URL) {
+        return urls.containsValue(URL);
+    }
+
+    public static String[] parse
 
 }
