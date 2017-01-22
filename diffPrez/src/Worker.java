@@ -34,15 +34,25 @@ public class Worker extends Thread {
         this.isBusy = isBusy;
     }
 
-    public void addURL() {
-
+    public void addURL(String url, int urlID, String description, String table) {
+        try {
+            PreparedStatement s = conn.prepareStatement("INSERT INTO ? values(?, ?, ?);");
+            s.setString(1, table);
+            s.setString(2, url);
+            s.setString(3, description);
+            s.setInt(4, urlID);
+            s.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        isBusy = false;
     }
 
     public void addWord(String word, int urlID, String table) {
         /* need to shorten word to 64 chars if necessary */
         if (word.length() > 64) {word = word.substring(0, 64);}
         try {
-            PreparedStatement s = conn.prepareStatement("INSERT INTO ? values(?, ?)");
+            PreparedStatement s = conn.prepareStatement("INSERT INTO ? values(?, ?);");
             s.setString(1, table);
             s.setString(2, word);
             s.setInt(3, urlID);
