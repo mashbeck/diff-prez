@@ -33,6 +33,21 @@
   max-width: 60em;
 }
 
+.section-title {
+  margin-top: 0;
+  padding-bottom: 50px;
+
+  text-align: center;
+  text-transform: uppercase;
+  font-family: "Montserrat", sans-serif;
+}
+
+.section-content {
+  font-size: 1.4em;
+  font-weight: 300;
+  font-family: "Open Sans", sans-serif;
+}
+
 @media (max-width: 480px) {
   .header-title {
     font-size: 2em;
