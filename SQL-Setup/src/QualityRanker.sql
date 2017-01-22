@@ -8,7 +8,7 @@ CREATE TABLE query (
 
 CREATE TABLE trumpResults (
     url VARCHAR(256),
-    description VARCHAR(MAX),
+    description TEXT(65535),
     relevance INT,
     ranking INT
 );
@@ -20,7 +20,7 @@ USE ObamaGov;
 
 CREATE TABLE obamaResults (
     url VARCHAR(256),
-    description VARCHAR(MAX),
+    description TEXT(65535),
     relevance INT,
     ranking INT
 );
