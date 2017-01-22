@@ -72,6 +72,11 @@ public class Crawler {
         return urls.containsValue(URL);
     }
 
-    public static String[] parse
+    public static String[] parseText(String url, int urlID) {
+        /* use Jsoup to grab title and p tags */
+
+    }
+
+    public static vo
 
 }
