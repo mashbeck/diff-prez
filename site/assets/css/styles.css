@@ -9,8 +9,7 @@
 .results-header {
   height: 30vh;
   /* background-image: url(/assets/img/washington-monument.jpg); */
-  border-bottom: 2px solid;
-  border-color: red;
+
   background-position: center center;
   background-size: cover;
   background-color: #207cca;
@@ -180,6 +179,10 @@ input.search-button:hover {
   color: #207cca;
 }
 
+#results-section {
+  min-height: 400px;
+  background-color: red;
+}
 
 .results-wrapper {
   display: flex;
