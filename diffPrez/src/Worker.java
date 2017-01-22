@@ -11,21 +11,24 @@ import java.util.*;
  */
 
 public class Worker extends Thread {
-    public int id;
-    public WorkerType type;
-
     enum WorkerType {
         CRAWLER,
         WRITER,
         DEFAULT
     }
 
-    public Worker() {
+    public int id;
+    public WorkerType type;
+    public boolean busy;
 
+
+    public Worker() {
+        this(-1, WorkerType.DEFAULT, false);
     }
 
-    public Worker(int id, WorkerType type) {
+    public Worker(int id, WorkerType type, boolean busy) {
         this.id = id;
         this.type = type;
+        this.busy = busy;
     }
 }
