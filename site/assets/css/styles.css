@@ -33,6 +33,12 @@
   max-width: 60em;
 }
 
+section {
+  padding: 100px 0;
+
+  color: #fff;
+}
+
 .section-title {
   margin-top: 0;
   padding-bottom: 50px;
