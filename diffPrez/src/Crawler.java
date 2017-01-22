@@ -42,7 +42,7 @@ public class Crawler extends Thread {
 
     public int id;
     public CrawlerType type;
-    public boolean isBusy;
+    public boolean isBusy = false;
     public Connection conn;//ToDo set this up
 
     /** Constructors **/
@@ -77,13 +77,13 @@ public class Crawler extends Thread {
 
         /* Start crawl over root */
         int rootChoice = JOptionPane.showOptionDialog(null, null, "Crawl over what domain?", 2,
-                JOptionPane.QUESTION_MESSAGE, null, new String[] {"whitehouse.gov", "obamawhitehouse.gov"}, null);
+                JOptionPane.QUESTION_MESSAGE, null, new String[] {"http://whitehouse.gov", "http://obamawhitehouse.gov"}, null);
         if (rootChoice == 1) {
-            root = "obamawhitehouse.gov";
+            root = "http://obamawhitehouse.gov";
             rootURLTable = "obama";
             rootWordTable = "obamaWords";
         } else {
-            root = "whitehouse.gov";
+            root = "http://whitehouse.gov";
             rootURLTable = "trump";
             rootWordTable = "trumpWords";
         }
@@ -98,16 +98,19 @@ public class Crawler extends Thread {
         urls.put(0, root);
         org.jsoup.nodes.Document d;
         String currURL = root;
-        while (nextID.intValue() > currID.intValue()) {
+        Crawler mainGuy = new Crawler();
+        while (true) {
             try {
                  d = Jsoup.connect(currURL).get();
                 for (Element link : d.select("a[href]")) {
-                    getFreeCrawler(CrawlerType.CRAWLER).checkUrlInDB(link.absUrl("href"));
+                    mainGuy.checkUrlInDB(link.absUrl("href"));
+                    //getFreeCrawler(CrawlerType.CRAWLER).checkUrlInDB(link.absUrl("href"));
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            currID.incrementAndGet();
+            currURL = urls.get(currID.incrementAndGet());
+            System.out.println(currURL);
         }
     }
 
@@ -117,6 +120,8 @@ public class Crawler extends Thread {
         if (type == Crawler.CrawlerType.WRITER) {
             while (writers.size() > 0) { /*ToDo determine if statement is stupid... Or may lead to inf. loop*/
                 for (Crawler w: writers) {
+                    System.out.println("I'm stuck in the writer loop!");
+                    System.out.println(w.isBusy);
                     if(!w.isBusy) {
                         w.isBusy = true;
                         return w;
@@ -126,6 +131,7 @@ public class Crawler extends Thread {
         } else if (type == Crawler.CrawlerType.CRAWLER) {
             while (crawlers.size() > 0) {
                 for (Crawler w: crawlers) {
+                    System.out.println("I'm stuck in the crawler loop!");
                     if(!w.isBusy) {
                         w.isBusy = true;
                         return w;
@@ -156,6 +162,10 @@ public class Crawler extends Thread {
         s.replaceAll(",", "");
         s.replaceAll(":", "");
         //ToDO consider best options for what to escape
+        s.replaceAll("Jump to main content Jump to navigation", "");
+        System.out.println("Description: " + s);
+        System.out.println("Description Length: " + s.length());
+
         return s;
     }
 
@@ -163,12 +173,14 @@ public class Crawler extends Thread {
         /* either word isn't in words yet, or ArrayList isn't there... */
         if (!words.containsKey(word) || words.get(word) == null) {
             words.put(word, (new ArrayList<Integer>(1)));
-            Crawler.getFreeCrawler(Crawler.CrawlerType.WRITER).addWord(word, urlID);
+            addWord(word, urlID);
+            //Crawler.getFreeCrawler(Crawler.CrawlerType.WRITER).addWord(word, urlID);
         }
         /* word is already there, but urlID is not */
         else if (!words.get(word).contains(urlID)) {
             words.get(word).add(urlID);
-            Crawler.getFreeCrawler(Crawler.CrawlerType.WRITER).addWord(word, urlID);
+            addWord(word, urlID);
+            //Crawler.getFreeCrawler(Crawler.CrawlerType.WRITER).addWord(word, urlID);
         }
         isBusy = false;
     }
@@ -176,19 +188,22 @@ public class Crawler extends Thread {
     public void checkUrlInDB(String url) {
         int urlID;
         if (!urls.containsValue(url)) {
+            System.out.println("Crawling #" + currID.intValue() + " " + url);
             urls.put((urlID = currID.getAndIncrement()), url);
             String description = parseDescription(url, urlID);
-            Crawler.getFreeCrawler(CrawlerType.WRITER).addURL(url , urlID, description);
+            addURL(url , urlID, description);
+            //Crawler.getFreeCrawler(CrawlerType.WRITER).addURL(url , urlID, description);
             String[] words = description.split(" ");
             for (String word: words) {
-                getFreeCrawler(CrawlerType.CRAWLER).checkWordInDB(word, urlID);
+                checkWordInDB(word, urlID);
+                //getFreeCrawler(CrawlerType.CRAWLER).checkWordInDB(word, urlID);
             }
         }
         isBusy = false;
     }
 
     public void addURL(String url, int urlID, String description) {
-        try {
+        /*try {
             PreparedStatement s = conn.prepareStatement("INSERT INTO ? values(?, ?, ?);");
             s.setString(1, rootURLTable);
             s.setString(2, url);
@@ -199,10 +214,13 @@ public class Crawler extends Thread {
             e.printStackTrace();
         }
         isBusy = false;
+        */
     }
 
     public void addWord(String word, int urlID) {
+
         /* need to shorten word to 64 chars if necessary */
+        /*
         if (word.length() > 64) {word = word.substring(0, 64);}
         try {
             PreparedStatement s = conn.prepareStatement("INSERT INTO ? values(?, ?);");
@@ -214,6 +232,7 @@ public class Crawler extends Thread {
             e.printStackTrace();
         }
         isBusy = false;
+        */
     }
     
 }
