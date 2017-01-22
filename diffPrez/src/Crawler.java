@@ -3,8 +3,6 @@ import org.jsoup.nodes.Element;
 
 import javax.swing.*;
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
@@ -73,27 +71,34 @@ public class Crawler extends Thread {
         /* Start crawl over root */
         int rootChoice = JOptionPane.showOptionDialog(null, null, "Crawl over what domain?", 2,
                 JOptionPane.QUESTION_MESSAGE, null, new String[] {"http://www.whitehouse.gov", "http://www.obamawhitehouse.archives.gov"}, null);
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            //e.printStackTrace();
+        }
         if (rootChoice == 1) {
             root = "http://www.obamawhitehouse.gov";
             rootCheck = "obamawhitehouse";
             rootURLTable = "obama";
             rootWordTable = "obamaWords";
-            connS = DriverManager.getConnection("jdbc:mysql://128.210.106.77/ObamaGov", "sean", "password");
-            PreparedStatement s = connS.prepareStatement("USE ObamaGov;");
-            s.executeUpdate();
+//            connS = DriverManager.getConnection("jdbc:mysql://localhost:3306/mysql", "root", "root");
+//            PreparedStatement s = connS.prepareStatement("USE ObamaGov;");
+            System.out.println("USE ObamaGov;");
+          //  s.executeUpdate();
         } else {
             root = "http://www.whitehouse.gov";
             rootCheck = "whitehouse.gov";
             rootURLTable = "trump";
             rootWordTable = "trumpWords";
-            connS = DriverManager.getConnection("jdbc:mysql://128.210.106.77/TrumpGov", "sean", "password");
-            PreparedStatement s = connS.prepareStatement("USE ObamaGov;");
-            s.executeUpdate();
+//            connS = DriverManager.getConnection("jdbc:mysql://128.210.106.77/TrumpGov", "sean", "password");
+            System.out.println("USE TrumpGov;");
+//            PreparedStatement s = connS.prepareStatement("USE TrumpGov;");
+            //s.executeUpdate();
         }
         start = System.nanoTime();
         /* begin crawl */
         crawl();
-        System.out.println("Done crawling " + root);
+        //System.out.println("Done crawling " + root);
     }
 
     public static void crawl() {
@@ -130,8 +135,8 @@ public class Crawler extends Thread {
         if (type == Crawler.CrawlerType.WRITER) {
             while (writers.size() > 0) { /*ToDo determine if statement is stupid... Or may lead to inf. loop*/
                 for (Crawler w : writers) {
-                    System.out.println("I'm stuck in the writer loop!");
-                    System.out.println(w.isBusy);
+                    //System.out.println("I'm stuck in the writer loop!");
+                    //System.out.println(w.isBusy);
                     if (!w.isBusy) {
                         w.isBusy = true;
                         return w;
@@ -141,7 +146,7 @@ public class Crawler extends Thread {
         } else if (type == Crawler.CrawlerType.CRAWLER) {
             while (crawlers.size() > 0) {
                 for (Crawler w : crawlers) {
-                    System.out.println("I'm stuck in the crawler loop!");
+                    //System.out.println("I'm stuck in the crawler loop!");
                     if (!w.isBusy) {
                         w.isBusy = true;
                         return w;
@@ -156,7 +161,7 @@ public class Crawler extends Thread {
         org.jsoup.nodes.Document d;
         int myID;
         String currURL = urls.get(myID = currID.get());
-        System.out.println(currURL);
+        //System.out.println(currURL);
         while (true) {
             //System.out.println("stuck with url: " + currURL);
             myID = currID.get();
@@ -173,7 +178,7 @@ public class Crawler extends Thread {
                     //getFreeCrawler(CrawlerType.CRAWLER).checkUrlInDB(link.absUrl("href"));
                 }
             } catch (Exception e) {
-                System.out.println("caught an exception");
+                //System.out.println("caught an exception");
             }
             currURL = urls.get(myID = currID.incrementAndGet());
             //System.out.println(currURL);
@@ -193,7 +198,7 @@ public class Crawler extends Thread {
                 sb.append(" ");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
 
         /* escape dangerous characters */
@@ -204,7 +209,7 @@ public class Crawler extends Thread {
         s.replaceAll("Jump to main content Jump to navigation", "");
         //System.out.println("Description: " + s);
         //System.out.println("Description Length: " + s.length());
-        System.out.println("Time elapsed: " + ((System.nanoTime() - start)) / 1000000000 + " seconds!");
+        //System.out.println("Time elapsed: " + ((System.nanoTime() - start)) / 1000000000 + " seconds!");
 
         return s;
     }
@@ -236,7 +241,7 @@ public class Crawler extends Thread {
             }
             int urlID;
             if (!urls.containsValue(url)) {
-                System.out.println("Crawling #" + nextID.intValue() + " " + url);
+                //System.out.println("Crawling #" + nextID.intValue() + " " + url);
                 urls.put((urlID = nextID.getAndIncrement()), url);
                 String description = parseDescription(url, urlID);
                 addURL(url, urlID, description);
@@ -252,7 +257,7 @@ public class Crawler extends Thread {
     }
 
     public void addURL(String url, int urlID, String description) {
-        try {
+        /*try {
             PreparedStatement s = conn.prepareStatement("INSERT INTO ? values(?, ?, ?);");
             s.setString(1, rootURLTable);
             s.setString(2, url);
@@ -260,8 +265,9 @@ public class Crawler extends Thread {
             s.setInt(4, urlID);
             s.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
-        }
+            //e.printStackTrace();
+        }*/
+        System.out.println("INSERT INTO " + rootURLTable + " values(" + url + ", " + description + ", " + urlID +");");
         isBusy = false;
 
     }
@@ -271,15 +277,16 @@ public class Crawler extends Thread {
         /* need to shorten word to 64 chars if necessary */
 
         if (word.length() > 64) {word = word.substring(0, 64);}
-        try {
+        /*try {
             PreparedStatement s = conn.prepareStatement("INSERT INTO ? values(?, ?);");
             s.setString(1, rootWordTable);
             s.setString(2, word);
             s.setInt(3, urlID);
             s.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
-        }
+            //e.printStackTrace();
+        }*/
+            System.out.println("INSERT INTO " + rootWordTable + " values(" + word + ", "+ urlID +");");
         isBusy = false;
     }
 
