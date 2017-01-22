@@ -33,6 +33,31 @@
   max-width: 60em;
 }
 
+@media (max-width: 480px) {
+  .header-title {
+    font-size: 2em;
+  }
+
+  .header-subtitle {
+    font-size: 1em;
+  }
+}
+
+.navbar {
+  margin-bottom: 0;
+  border: none;
+
+  background-color: transparent;
+}
+
+.navbar a {
+  color: white !important;
+}
+
+.navbar-default .navbar-toggle .icon-bar {
+  background-color: white;
+}
+
 footer {
   padding: 2em;
 
