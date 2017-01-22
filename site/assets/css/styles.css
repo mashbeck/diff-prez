@@ -9,6 +9,8 @@
 .results-header {
   height: 30vh;
   /* background-image: url(/assets/img/washington-monument.jpg); */
+  border-bottom: 2px;
+  border-color: white;
   background-position: center center;
   background-size: cover;
   background-color: #207cca;
