@@ -29,6 +29,20 @@
   text-align: center;
 }
 
+.results-header-text {
+  position: relative;
+  top: 40%;
+  -webkit-transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  -o-transform: translateY(-50%);
+  transform: translateY(-50%);
+
+  color: white;
+  text-align: center;
+  padding-bottom: 60px;
+}
+
 .header-title {
   margin-top: 0;
 
