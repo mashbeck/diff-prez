@@ -23,6 +23,8 @@ public class Crawler {
             new ConcurrentHashMap<String, ArrayList<Integer>>();
 
     public static String root;
+    public static String rootURLTable;
+    public static String rootWordTable;
 
     public static int currID = 0;
     public static int nextID = 1;
@@ -50,8 +52,12 @@ public class Crawler {
                 JOptionPane.QUESTION_MESSAGE, null, new String[] {"whitehouse.gov", "obamawhitehouse.gov"}, null);
         if (rootChoice == 1) {
             root = "obamawhitehouse.gov";
+            rootURLTable = "obama";
+            rootWordTable = "obamaWords";
         } else {
             root = "whitehouse.gov";
+            rootURLTable = "trump";
+            rootWordTable = "trumpWords";
         }
 
         /* begin crawl */
@@ -80,10 +86,39 @@ public class Crawler {
     }
 
     public static void addWord(String word, int urlID) {
-        if (!words.containsKey(word)) {
+        /* either word isn't in words yet, or ArrayList isn't there... */
+        if (!words.containsKey(word) || words.get(word) == null) {
             words.put(word, (new ArrayList<Integer>(1)));
+            getFreeWorker(Worker.WorkerType.WRITER).addWord(word, urlID, rootWordTable);
         }
-        if (words.get(word))
+        /* word is already there, but urlID is not */
+        else if (!words.get(word).contains(urlID)) {
+            words.get(word).add(urlID);
+            getFreeWorker(Worker.WorkerType.WRITER).addWord(word, urlID, rootWordTable);
+        }
+    }
+
+    public static Worker getFreeWorker(Worker.WorkerType type) {
+        if (type == Worker.WorkerType.WRITER) {
+            while (writers.size() > 0) { //ToDo determine if statement is stupid...
+                for (Worker w: writers) {
+                    if(!w.isBusy) {
+                        w.isBusy = true;
+                        return w;
+                    }
+                }
+            }
+        } else if (type == Worker.WorkerType.CRAWLER) {
+            while (crawlers.size() > 0) {
+                for (Worker w: crawlers) {
+                    if(!w.isBusy) {
+                        w.isBusy = true;
+                        return w;
+                    }
+                }
+            }
+        }
+        return null;
     }
 
 }
