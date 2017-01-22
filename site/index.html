@@ -47,14 +47,10 @@
 
         <div class="search-container">
           <form action="/search" method="post" id="formID">
-            <input type="text" name="searchbox" class="search-box" placeholder="Search..." required="true" />
+            <input type="text" name="searchbox" class="search-box" placeholder="Search..." required x-moz-errormessage="Please fill this out" />
             <input type="submit" class="search-button" value="Search" />
           </form>
 
-          <div id="errorMessageDiv" style="display:block;">
-            Please, fill in the form.
-          </div>
-          
         </div>
       </div>
 
