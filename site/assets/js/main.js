@@ -1,15 +1,32 @@
 /*
-  Do these things when the page loads
+* Stuff that needs done when the page loads.
 */
-$(function()) {
-  //TODO: FIND THINGS TO DO
-  var forms = document.getElementsByTagName('formID');
-  for (var i = 0; i < forms.length; i++) {
-    forms[i].noValidate = true;
-    forms[i].addEventListener('submit', function(event) {
-      if (!event.target.checkValidity()) {
-        event.preventDefault();
-      }
-    }, false);
-  }
+$(function() {
+  registerNavButtons();
 });
+
+/*
+* registerNavButtons lets us register the buttons for about and contact
+*/
+function registerNavButtons() {
+  var sections = ["about"];
+
+  sections.forEach(function(section) {
+    clickAndScroll("#nav-" + section, "#" + section + "-section");
+  });
+}
+
+/*
+* Smoothens scrolling when About or Contact are selected from the navbar
+*/
+function clickAndScroll(link, section) {
+  var delay = 700;
+
+  $(link).click(function() {
+    $("html, body").animate({
+      scrollTop: $(section).offset().top
+    }, delay);
+
+    return false;
+  });
+}
