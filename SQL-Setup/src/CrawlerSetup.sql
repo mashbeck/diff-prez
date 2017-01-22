@@ -1,4 +1,11 @@
-CREATE DATABASE Trump;
+CREATE DATABASE TrumpGov;
 
-CREATE DATABASE Obama;
+CREATE DATABASE ObamaGov;
 
+USE TrumpGov;
+
+CREATE TABLE trump(
+    URL ,
+    description,
+
+_)
