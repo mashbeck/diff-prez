@@ -1,12 +1,11 @@
-import java.sql.*;
-import org.jsoup.*;
+import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 
 import javax.swing.*;
-import javax.swing.text.Document;
-import java.io.*;
+import java.io.IOException;
 import java.sql.Connection;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Scanner;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -105,11 +104,17 @@ public class Crawler extends Thread {
         urls.put(0, root);
         org.jsoup.nodes.Document d;
         String currURL = root;
-        Crawler mainGuy = new Crawler();
-        while (true) {
+        for (int i = 0; i < 10; i++) {
+            (new Crawler()).start();
+            long start = System.nanoTime();
+            while ((start - System.nanoTime()) / 1000000000 < 5) {}
+        }
+
+        /*while (true) {
             try {
                 //System.out.println("currURL " + currURL);
                  d = Jsoup.connect(currURL).get();
+                if (d == null || d.select("a[href]") == null) {currID.incrementAndGet();continue;}
                 for (Element link : d.select("a[href]")) {
                     //System.out.println("Link: " + link.absUrl("href"));
                     mainGuy.checkUrlInDB(link.absUrl("href"));
@@ -119,6 +124,32 @@ public class Crawler extends Thread {
                 e.printStackTrace();
             }
             currURL = urls.get(currID.incrementAndGet());
+            //System.out.println(currURL);
+        }*/
+    }
+
+    public void run() {
+        org.jsoup.nodes.Document d;
+        int myID;
+        String currURL = urls.get(myID = currID.get());
+        System.out.println(currURL);
+        while (true) {
+            myID = currID.get();
+            currURL = urls.get(myID);
+            try {
+                //System.out.println("currURL " + currURL);
+                if (currURL == null) {continue;}
+                d = Jsoup.connect(currURL).get();
+                if (d == null || d.select("a[href]") == null) {myID = currID.get();continue;}
+                for (Element link : d.select("a[href]")) {
+                    //System.out.println("Link: " + link.absUrl("href"));
+                    checkUrlInDB(link.absUrl("href"));
+                    //getFreeCrawler(CrawlerType.CRAWLER).checkUrlInDB(link.absUrl("href"));
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            currURL = urls.get(myID = currID.incrementAndGet());
             //System.out.println(currURL);
         }
     }
