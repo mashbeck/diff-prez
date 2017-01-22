@@ -1,0 +1,4 @@
+CREATE DATABASE Trump;
+
+CREATE DATABASE Obama;
+
