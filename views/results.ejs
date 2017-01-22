@@ -47,36 +47,52 @@
         </div>
       </nav>
 
+<!--
       <div class="results-header-text">
         <h1 class="header-title">Your Results.</h1>
         <h2 class="header-subtitle">Go on, check them out!</h2>
       </div>
+
+    -->
 
     </header>
 
     <main>
       <section id="results-section">
         <div class="container">
+
+          <h1 class="results-section-title">Your Results</h1>
+          <h3 class="results-section-title">Check out the results for:</h3>
+          <h3 class="results-section-title-final">"<%= searchquery %>"</h3>
+
+
+
           <div class="row results-wrapper">
             <div class="left-side col-xs-6">
 
-              YOU HAVE JUST SEARCHED FOR: "<%= searchquery %>"
               <% for (var i=0; i < results.length; i++) { %>
-              <li> <%= results[i] %></li>
+              <div class="holder">
+                <p>
+                  <br />
+                  <%= results[i] %>
+                </p>
+               </div>
               <% } %>
 
 
-              <p>Basdfjlasjdlfk ;asljdf ;lajsl;df jl;asjdf</p>
             </div>
             <div class="right-side col-xs-6">
 
-              YOU HAVE JUST SEARCHED FOR: "<%= searchquery %>"
               <% for (var i=0; i < results.length; i++) { %>
-              <li> <%= results[i] %></li>
+              <div class="holder">
+
+                <p>
+                  <br />
+                  <%= results[i] %>
+                </p>
+               </div>
               <% } %>
 
-
-              <p>;asjdf; lajskld jflasjl;df j;lasj dljs;ld</p>
             </div>
           </div>
         </div>
