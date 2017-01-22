@@ -103,6 +103,10 @@ section {
   color: white;
 }
 
+a.github-link {
+  color: white;
+}
+
 #about-section {
   min-height: 400px;
   background-color: #207cca;
