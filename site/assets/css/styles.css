@@ -6,6 +6,16 @@
   background-size: cover;
 }
 
+.results-header {
+  height: 30vh;
+  /* background-image: url(/assets/img/washington-monument.jpg); */
+  border-bottom: 2px solid;
+  border-color: red;
+  background-position: center center;
+  background-size: cover;
+  background-color: #207cca;
+}
+
 .header-text {
   position: relative;
   top: 40%;
@@ -17,6 +27,20 @@
 
   color: white;
   text-align: center;
+}
+
+.results-header-text {
+  position: relative;
+  top: 40%;
+  -webkit-transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  -o-transform: translateY(-50%);
+  transform: translateY(-50%);
+
+  color: white;
+  text-align: center;
+  padding-bottom: 20px;
 }
 
 .header-title {
@@ -172,6 +196,20 @@ input.search-button:hover {
     text-align: center;
   }
 
+}
+
+input.search-button-results {
+  position: relative;
+  padding: 6px 15px;
+  left: -8px;
+  border: 2px solid #E91D0E;
+  background-color: #E91D0E;
+  color: white;
+}
+
+input.search-button-results:hover {
+  background-color: #fafafa;
+  color: #E91D0E;
 }
 
 .left-side {
