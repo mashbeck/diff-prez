@@ -48,6 +48,37 @@
   font-family: "Open Sans", sans-serif;
 }
 
+#about-section {
+  min-height: 400px;
+  background-color: #339DCA;
+}
+
+.about-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.headshot {
+  width: 100%;
+  border: 5px solid #fff;
+}
+
+@media (max-width: 480px) {
+  .about-wrapper {
+    display: block;
+  }
+
+  .about-wrapper div:first-child {
+    text-align: center;
+  }
+
+  .headshot {
+    width: 50%;
+    margin-bottom: 25px;
+  }
+}
+
 @media (max-width: 480px) {
   .header-title {
     font-size: 2em;
