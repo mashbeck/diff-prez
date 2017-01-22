@@ -6,7 +6,7 @@ USE TrumpGov;
 
 CREATE TABLE trump(
     url VARCHAR(256),
-    description VARCHAR(65536),
+    description VARCHAR(65535),
     id INT
 );
 
@@ -19,7 +19,7 @@ USE ObamaGov;
 
 CREATE TABLE obama(
     url VARCHAR(256),
-    description VARCHAR(65536),
+    description VARCHAR(65535),
     id INT
 );
 
