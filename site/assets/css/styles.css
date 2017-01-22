@@ -15,7 +15,8 @@
   -o-transform: translateY(-50%);
   transform: translateY(-50%);
 
-  color: white;
+  border: 1px solid #ffffff;
+  color: black;
   text-align: center;
 }
 
