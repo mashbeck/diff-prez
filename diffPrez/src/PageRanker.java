@@ -1,5 +1,8 @@
 /**
- * Created by sflanner on 1/21/17.
+ * Created by SeanFlannery on 1/21/17.
+ *
+ * Ranks results
+ *
  */
 public class PageRanker {
 }
