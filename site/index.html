@@ -46,10 +46,15 @@
         <h2 class="header-subtitle">Anotha one</h2>
 
         <div class="search-container">
-          <form action="/search" method="post">
-            <input type="text" name="searchbox" class="search-box" placeholder="Search..." required />
+          <form action="/search" method="post" id="formID">
+            <input type="text" name="searchbox" class="search-box" placeholder="Search..." required="true" />
             <input type="submit" class="search-button" value="Search" />
           </form>
+
+          <div id="errorMessageDiv" style="display:block;">
+            Please, fill in the form.
+          </div>
+          
         </div>
       </div>
 
