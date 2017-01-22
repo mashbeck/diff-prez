@@ -82,7 +82,7 @@ form {
   font-size: 1em;
 }
 
-input.searchbox {
+input.search-box {
   padding: 8px 15px;
   background: rgba(50, 50, 40, 0.2);
   border: 0px solid #dbdbdb;
