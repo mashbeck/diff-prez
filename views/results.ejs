@@ -57,10 +57,10 @@
     <main>
       <section id="results-section">
         <div class="container">
+          <h2 class="section-title">Results For: "<%= searchquery %>"</h2>
           <div class="row results-wrapper">
             <div class="left-side col-xs-6">
 
-              YOU HAVE JUST SEARCHED FOR: "<%= searchquery %>"
               <% for (var i=0; i < results.length; i++) { %>
               <li> <%= results[i] %></li>
               <% } %>
