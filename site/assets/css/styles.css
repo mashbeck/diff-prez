@@ -254,3 +254,7 @@ input.search-button-results:hover {
 .right-side {
   text-align: right;
 }
+
+a.white-link {
+  color: white;
+}

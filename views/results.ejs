@@ -62,7 +62,7 @@
         <div class="container">
 
           <h1 class="results-section-title">Your Results</h1>
-          <h3 class="results-section-title">Check out the results for:</h3>
+          <h3 class="results-section-title">Check out what we found for:</h3>
           <h3 class="results-section-title-final">"<%= searchquery %>"</h3>
 
 
@@ -74,7 +74,8 @@
               <div class="holder">
                 <p>
                   <br />
-                  <a href="<%= trumpurls[i] %>"><%= trumpurls[i] %></a>  <%= trumpdesc[i] %>
+                  <a class="white-link" href="<%= trumpurls[i] %>"><%= trumpurls[i] %></a>
+                  <br /><%= trumpdesc[i] %>
                 </p>
                </div>
               <% } %>
@@ -87,7 +88,8 @@
 
                 <p>
                   <br />
-                  <a href="<%=  obamaurls[i] %>"><%= obamaurls[i] %></a>  <%= obamadesc[i] %>
+                  <a class="white-link" href="<%=  obamaurls[i] %>"><%= obamaurls[i] %></a>
+                  <br /><%= obamadesc[i] %>
                 </p>
                </div>
               <% } %>
