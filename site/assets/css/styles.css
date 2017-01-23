@@ -257,4 +257,5 @@ input.search-button-results:hover {
 
 a.white-link {
   color: white;
+  text-decoration: underline;
 }
