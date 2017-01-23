@@ -258,8 +258,5 @@ input.search-button-results:hover {
 a.white-link {
   color: white;
   text-decoration: underline;
-}
-
-strong.results-desc {
-  color: #E6E6E6;
+  
 }
