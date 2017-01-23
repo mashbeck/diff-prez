@@ -70,11 +70,11 @@
           <div class="row results-wrapper">
             <div class="left-side col-xs-6">
 
-              <% for (var i=0; i < results.length; i++) { %>
+              <% for (var i=0; i < trumpdesc.length; i++) { %>
               <div class="holder">
                 <p>
                   <br />
-                  <%= results[i] %>
+                  <a href="<%= trumpurls[i] %>"><%= trumpurls[i] %></a>  <%= trumpdesc[i] %>
                 </p>
                </div>
               <% } %>
@@ -82,12 +82,12 @@
             </div>
             <div class="right-side col-xs-6">
 
-              <% for (var i=0; i < results.length; i++) { %>
+              <% for (var i=0; i < obamadesc.length; i++) { %>
               <div class="holder">
 
                 <p>
                   <br />
-                  <%= results[i] %>
+                  <a href="<%=  obamaurls[i] %>"><%= obamaurls[i] %></a>  <%= obamadesc[i] %>
                 </p>
                </div>
               <% } %>
