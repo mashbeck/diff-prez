@@ -22,10 +22,10 @@ database : 'TrumpGov',
 Oconnection.connect();
 Tconnection.connect();  */
 
-var trumpURLS = ["www.google.com", "www.whitehouse.gov", "www.reddit.com", "www.facebook.com"];
-var obamaURLS = ["www.yahoo.com", "www.twitter.com", "www.4chan.org", "www.amazon.com"];
-var obamadesc = ["hello world", "ya ya ya", "some text here", "blah blah blah"];
-var trumpdesc = ["This is a description", "result2", "result3", "result4"];
+var trumpURLS = ["http://www.google.com", "http://www.whitehouse.gov", "http://www.reddit.com", "http://www.facebook.com"];
+var obamaURLS = ["http://www.yahoo.com", "http://www.twitter.com", "http://www.4chan.org", "http://www.amazon.com"];
+var obamadesc = ["A popular mail service", "A social network with 140 characters", "Stay away from this place", "A huge online store"];
+var trumpdesc = ["The worlds most popular search engine", "White House official page", "Stay away from this place too", "The worlds largest human information database"];
 app.set('view engine', 'ejs');
 
 app.use(bodyparser.urlencoded({ extended: true }));
